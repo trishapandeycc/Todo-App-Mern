@@ -1,0 +1,103 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body{
+  min-height: 100vh;
+  background: #68B0AB;
+  font-family: Arial, Helvetica, sans-serif;
+  user-select: none;
+}
+
+.App{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 50px;
+}
+.App h1{
+  font-size: 3rem;
+  color: #2c3e50;
+}
+
+form{
+  width: 600px;
+  display: flex;
+  gap: 15px;
+}
+
+form input{
+  height: 50px;
+  flex: 1;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  outline: none;
+  padding: 0 15px;
+  font-size: 18px;
+}
+form input:focus{
+  border-color: #2c3e50;
+}
+
+form button{
+  width: 100px;
+  width: 120px;
+  border: none;
+  border-radius: 10px;
+  background: #2c3e50;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+form button:hover{
+  transform: translateY(-2px);
+}
+.outerDiv {
+  width: 600px;
+  margin: auto;
+}
+.outerDiv ul{
+  margin-top: 20px;
+  
+}
+
+.outerDiv ul li{
+  background: white;
+  padding: 15px 20px;
+  margin-top: 12px;
+  border-radius: 12px;
+  list-style: none;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.outerDiv ul li:hover{
+  transform: translateY(-3px);
+}
+
+.outerDiv ul li span{
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 28px;
+  color: #e74c3c;
+  cursor: pointer;
+}
+
+.outerDiv ul li span:hover{
+  transform: translateY(-50%) scale(1.2);
+}
+
+.completetodo{
+  text-decoration: line-through;
+  color: #888;
+  background: #d1fae5 !important;
+}
