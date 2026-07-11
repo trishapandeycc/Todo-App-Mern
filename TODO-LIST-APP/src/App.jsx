@@ -1,19 +1,42 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getTodos, createTodo, deleteTodo,  updateTodo } from '../api/todoApi';
 import './App.css'
 
 function App() {
   let [todolist, setTodolist] = useState([]);
 
+  useEffect(() => {
+  fetchTodos();
+}, []);
 
-  let saveToDoList = (event) => {
+const fetchTodos = async () => {
+  try {
+    const response = await getTodos();
+    setTodolist(response.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+  
+
+
+  let saveToDoList = async (event) => {
     event.preventDefault();
     let toname = event.target.toname.value.trim();
     if(toname === "") return;
-    if(!todolist.includes(toname)){
-      let finalDolist =[...todolist, toname];
-      setTodolist(finalDolist);
-      event.target.toname.value = "";
+    const exists = todolist.some(
+  (todo) => todo.title.toLowerCase() === toname.toLowerCase()
+);
+
+if (!exists) {
+      await createTodo({
+  title: toname,
+});
+
+fetchTodos();
+
+event.target.toname.value = "";
     }
     else{
       alert("ToDo name already exists...");
@@ -21,14 +44,39 @@ function App() {
       event.preventDefault();
     }
 
-    let list = todolist.map((value, index) => {
+    const handleDeleteTodo = async (id) => {
+  try {
+    await deleteTodo(id);
+    fetchTodos();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+  const handleToggleComplete = async (todo) => {
+  try {
+    await updateTodo(todo._id, {
+      title: todo.title,
+      completed: !todo.completed,
+    });
+
+    fetchTodos();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+    let list = todolist.map((todo) => {
       return (
-        <ToDoListItem value={value} key={index} indexNumber={index} 
-        todolist={todolist} 
-        setTodolist = {setTodolist}
-        />
+        <ToDoListItem
+  value={todo}
+  key={todo._id}
+  onDelete={handleDeleteTodo}
+  onToggle={handleToggleComplete}
+/>
       )
     })
+
 
   return (
    <div className="App">
@@ -49,18 +97,19 @@ function App() {
 export default App
 
 
-function ToDoListItem ({value, indexNumber, todolist, setTodolist}){
-  let [status, setStatus] = useState(false);
-  let deleteRow = () => {
-    const finalData = todolist.filter((v, i) => i !== indexNumber);
-    setTodolist(finalData);
+function ToDoListItem({ value, onDelete, onToggle }){
 
-  }
+ const deleteRow = async (e) => {
+  e.stopPropagation();
 
-  let checkStatus = () => {
-    setStatus(!status);
-  }
+  await onDelete(value._id);
+};
+
+
   return(
-    <li className={status ? 'completetodo' : ''} onClick={checkStatus}> {value} <span onClick={deleteRow}>&times;</span></li>
+    <li
+  className={value.completed ? "completetodo" : ""}
+  onClick={() => onToggle(value)}
+> {value.title} <span onClick={deleteRow}>&times;</span></li>
   );
 }
