@@ -13,7 +13,7 @@ export const createTodo = (todo) => API.post("/", todo);
 // Delete a todo
 export const deleteTodo = (id) => API.delete(`/${id}`);
 
-//Update a todo
+// Update a todo
 export const updateTodo = (id, todo) => API.put(`/${id}`, todo);
 
 export default API;

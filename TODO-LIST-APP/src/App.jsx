@@ -26,7 +26,7 @@ const fetchTodos = async () => {
     let toname = event.target.toname.value.trim();
     if(toname === "") return;
     const exists = todolist.some(
-  (todo) => todo.title.toLowerCase() === toname.toLowerCase()
+  todo => todo.title.trim().toLowerCase() === toname.toLowerCase()
 );
 
 if (!exists) {
@@ -34,7 +34,7 @@ if (!exists) {
   title: toname,
 });
 
-fetchTodos();
+await fetchTodos();
 
 event.target.toname.value = "";
     }
@@ -47,7 +47,7 @@ event.target.toname.value = "";
     const handleDeleteTodo = async (id) => {
   try {
     await deleteTodo(id);
-    fetchTodos();
+    await fetchTodos();
   } catch (error) {
     console.log(error);
   }
@@ -60,7 +60,7 @@ event.target.toname.value = "";
       completed: !todo.completed,
     });
 
-    fetchTodos();
+    await fetchTodos();
   } catch (error) {
     console.log(error);
   }
